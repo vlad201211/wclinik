@@ -1,10 +1,15 @@
 <?php
-/* 
-Template Name: Snarfer
+/*
+Template Name: widgetclinik
 */
+
+// Шаблон контента
+
 ?>
 
-<?php get_header(); ?>
+<?php get_header(); 
+
+?>
 
 <div id="content" class="widecolumn">
 
@@ -19,18 +24,6 @@ Template Name: Snarfer
  <?php edit_post_link('Edit this entry.', '<p>', '</p>'); ?>
 
 </div>
-<div id="main">
 
 
-<h2>Archives by Month:</h2>
-  <ul>
-    <?php wp_get_archives('type=monthly'); ?>
-  </ul>
-
-<h2>Archives by Subject:</h2>
-  <ul>
-     <?php wp_list_cats(); ?>
-  </ul>
-
-</div>
 <?php get_footer(); ?>
