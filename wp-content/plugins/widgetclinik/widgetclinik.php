@@ -46,6 +46,7 @@ add_action('admin_menu', 'wclinik_admin_menu');
 global $jal_db_version;
 $jal_db_version = "1.0";
 
+// При активации вызываем ее
 function jal_install () {
    global $wpdb;
    global $jal_db_version;
