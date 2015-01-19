@@ -8,7 +8,7 @@ Author: dxlab
 Author URI: dxlab.ru
 */
 
-// Выводит форму в админке 11231
+// Выводит форму в админке 112311
 function get_wclinik_form() {
 ?>
 	<div class="wrap">
