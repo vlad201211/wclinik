@@ -9,17 +9,25 @@ Author URI: dxlab.ru
 */
 
 
-include_once 'install.php';
 include_once 'class_widget.php';
 include_once 'wconfig.php';
 
 
-// Добавляем меню в админке cms
+// Добавляем меню в админку cms ***************
 function wclinik_admin_menu(){
     $widget = new widgetclinik();
     $widget->add_admin_menu();
 }
-// Добавляем в меню пункт
 add_action('admin_menu', 'wclinik_admin_menu');
+// ********************************************
+
+
+// Установка плагина *********************************
+function wclinik_install(){
+    $widget = new widgetclinik();
+    $widget->install();
+}
+register_activation_hook(__FILE__, 'wclinik_install');
+// ***************************************************
 
 ?>
