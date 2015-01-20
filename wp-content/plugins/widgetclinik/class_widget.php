@@ -38,13 +38,13 @@ include_once 'config.php';
 
               // Подключаем файл для работы с базой
               require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-              print_r($this->config->sql_table_clinik);
+              
               // Создаем таблицы
               foreach ($this->config->sql_table_clinik as $key=>$data){
                   // Проверяем если таблицы нет, тогда создаем
                   if($wpdb->get_var("show tables like '".$data['name']."'") != $data['name']) {
                       // Выполняем запрос
-                      dbDelta($data["sql"]); 
+                      dbDelta($wpdb->escape($data["sql"])); 
                   }
               }
                 
@@ -59,8 +59,61 @@ include_once 'config.php';
 
                // Записываем версию
                add_option("wclinik_db_version", $this->config->version);
-
-            
+         }
+         
+         // Выводим информацию
+         function render_html(){
+             global $wpdb;
+             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+             
+             // Выводим список специалистов ****************************************************************************************
+             if(empty($_GET['r'])){
+                 $rows = $wpdb->get_results($wpdb->escape( "SELECT * FROM ".$this->config->sql_table_clinik["specialty"]["name"] ));
+                 
+                 ?>
+                <ul>
+                <?php
+                 
+                foreach ($rows as $key=>$data){
+                ?>
+                    <li><a href="?r=<?php print $data->id;?>">
+                    <?php
+                        print $data->name;
+                    ?>
+                    </a></li>
+                <?php
+                }
+                 
+                ?>
+                </ul>
+                 <?php  
+             }
+             // ********************************************************************************************************************
+             
+             // Выводим список врачей ****************************************************************************************
+             if(!empty($_GET['r'])){
+                 $rows = $wpdb->get_results($wpdb->escape( "SELECT * FROM ".$this->config->sql_table_clinik["doctor"]["name"] )." WHERE id_specialty = ".$_GET['r']);
+                 
+                 ?>
+                <ul>
+                <?php
+                 
+                foreach ($rows as $key=>$data){
+                ?>
+                    <li><a href="?r=<?php print $_GET['r'];?>">
+                    <?php
+                        print $data->name;
+                    ?>
+                    </a></li>
+                <?php
+                }
+                 
+                ?>
+                </ul>
+                 <?php  
+             }
+             // ********************************************************************************************************************
+             
          }
         
 
