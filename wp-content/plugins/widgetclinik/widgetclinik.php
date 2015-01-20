@@ -26,6 +26,7 @@ add_action('admin_menu', 'wclinik_admin_menu');
 function wclinik_install(){
     $widget = new widgetclinik();
     $widget->install();
+
 }
 register_activation_hook(__FILE__, 'wclinik_install');
 // ***************************************************
