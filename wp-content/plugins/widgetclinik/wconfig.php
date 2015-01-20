@@ -19,7 +19,7 @@
             $this->init_sql_table();
         }
         
-        // Инициализация массива с таблицей
+        // Инициализация массива с таблицей 
         function init_sql_table(){
             $this->sql_table_clinik[]= array("name" => "wclinik_specialty",
                  "sql"=>"CREATE TABLE wclinik_specialty (
