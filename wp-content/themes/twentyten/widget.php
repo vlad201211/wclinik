@@ -20,8 +20,18 @@ Template Name: widgetclinik
    <?php the_content(); ?>
       
       <?php
+      // Выводим данные для выбора
       $wclinik = new widgetclinik();
       $wclinik->render_html();
+      
+      
+      // Тестирую парсел
+      if(!empty($_GET["instal"])){
+        $parsel = new widget_clinik_class("data/classifier.xml");
+        $parsel->getClassifier();
+        $parsel->getClassifierDoctor();
+        $parsel->getDoctorToCatalogs();
+      }
       ?>
       
   </div>

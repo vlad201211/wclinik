@@ -11,6 +11,7 @@ Author URI: dxlab.ru
 
 include_once 'class_widget.php';
 include_once 'wconfig.php';
+include_once 'class_parsel.php';
 
 
 // Добавляем меню в админку cms ***************

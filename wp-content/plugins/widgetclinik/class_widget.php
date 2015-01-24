@@ -42,7 +42,7 @@ include_once 'config.php';
               // Создаем таблицы
               foreach ($this->config->sql_table_clinik as $key=>$data){
                   // Проверяем если таблицы нет, тогда создаем
-                  if($wpdb->get_var("show tables like '".$data['name']."'") != $data['name']) {
+                 if($wpdb->get_var("show tables like '".$data['name']."'") != $data['name']) {
                       // Выполняем запрос
                       dbDelta($wpdb->escape($data["sql"])); 
                   }
@@ -65,18 +65,23 @@ include_once 'config.php';
          function render_html(){
              global $wpdb;
              require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+          
+             // Выводим список услуг ****************************************************************************************
+             $service = $_GET['service'];
+             if(empty($_GET['service'])) $service = 0;
              
-             // Выводим список специалистов ****************************************************************************************
-             if(empty($_GET['r'])){
-                 $rows = $wpdb->get_results($wpdb->escape( "SELECT * FROM ".$this->config->sql_table_clinik["specialty"]["name"] ));
-                 
+             $toservice = $_GET['toservice'];
+             if(empty($_GET['toservice'])) $toservice = 0;
+             
+                 $rows = $wpdb->get_results($wpdb->escape( "SELECT * FROM ".$this->config->sql_table_clinik["categories"]["name"] )." WHERE parent = ".$toservice);
                  ?>
+                 
+                <p><a href="?toservice=<?php print $service; ?>">Назад</a></p>
                 <ul>
                 <?php
-                 
                 foreach ($rows as $key=>$data){
                 ?>
-                    <li><a href="?r=<?php print $data->id;?>">
+                    <li><a href="?service=<?php print $toservice;?>&toservice=<?php print $data->id;?>">
                     <?php
                         print $data->name;
                     ?>
@@ -86,12 +91,38 @@ include_once 'config.php';
                  
                 ?>
                 </ul>
+                
+                <?php
+                    $rows = $wpdb->get_results($wpdb->escape( "SELECT * FROM ".$this->config->sql_table_clinik["service"]["name"] )." WHERE id_categories = ".$toservice);
+                    $rows = $wpdb->get_results($wpdb->escape( "SELECT * FROM ".$this->config->sql_table_clinik["doctor_to_service"]["name"] )." WHERE id_service = ".$rows[0]->id);
+                    
+                ?>
+                
+                <ul>
+                <?php
+                foreach ($rows as $key=>$data){
+                    $data_doctor = $wpdb->get_results($wpdb->escape( "SELECT * FROM ".$this->config->sql_table_clinik["doctor"]["name"] )." WHERE id = ".$data->id_doctor);
+                    
+                    if(count($data_doctor)==0)continue;
+                ?>
+                    <li><a href="">
+                    <?php
+                        print $data_doctor[0]->name;
+                    ?>
+                    </a></li>
+                <?php
+                }
+                 
+                ?>
+                </ul>
+                
                  <?php  
-             }
+             
+             
              // ********************************************************************************************************************
              
              // Выводим список врачей ****************************************************************************************
-             if(!empty($_GET['r'])){
+             /*if(!empty($_GET['r'])){
                  $rows = $wpdb->get_results($wpdb->escape( "SELECT * FROM ".$this->config->sql_table_clinik["doctor"]["name"] )." WHERE id_specialty = ".$_GET['r']);
                  
                  ?>
@@ -111,7 +142,7 @@ include_once 'config.php';
                 ?>
                 </ul>
                  <?php  
-             }
+             }*/
              // ********************************************************************************************************************
              
          }
